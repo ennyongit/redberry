@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = "9fa65f37-7816-4e0c-9db1-0b9ee71acf98";
+    const token = import.meta.env.API_TOKEN;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

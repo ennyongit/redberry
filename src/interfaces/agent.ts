@@ -4,3 +4,11 @@ export interface Agent {
   surname: string;
   avatar: string;
 }
+
+export interface CreateAgentPayload {
+  name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  avatar: string;
+}

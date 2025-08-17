@@ -18,3 +18,17 @@ export interface RealEstate {
     };
   };
 }
+
+export interface CreateRealEstatePayload {
+  address: string;
+  image: string;
+  region_id: number;
+  description: string;
+  city_id: number;
+  zip_code: string;
+  price: number;
+  area: number;
+  bedrooms: number;
+  is_rental: number;
+  agent_id: number;
+}
