@@ -5,20 +5,14 @@ import { Region } from "../interfaces/geo";
 import FilterDropDown from "./FilterDropDown";
 import { Filters } from "../interfaces/filters";
 
+interface filterBarProps {
+  onFilterChange: (key: keyof Filters, value: any) => void;
+}
 
-const FilterBar = () => {
+const FilterBar = ({ onFilterChange }: filterBarProps) => {
   // regions API
   const [regions, setRegions] = useState<Region[]>();
   const [dropDownItem, setDropDownItem] = useState<string | null>(null);
-  const [filters, setFilters] = useState({ regions: [] });
-
-
-  const handleFilterChange = (key: keyof Filters, value: any) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
 
   useEffect(() => {
     getRegions()
@@ -62,7 +56,11 @@ const FilterBar = () => {
               );
             })}
           </ul>
-          <FilterDropDown active={dropDownItem} regions={regions} />
+          <FilterDropDown
+            active={dropDownItem}
+            regions={regions}
+            onApply={onFilterChange}
+          />
         </div>
         <div className="flex gap-4">
           <button className="flex items-center bg-[#F93B1D] text-white px-4 py-2 rounded-lg cursor-pointer">

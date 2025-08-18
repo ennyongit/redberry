@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Region } from "../interfaces/geo";
+import { Filters } from "../interfaces/filters";
 
 interface FilterDropDownProps {
   active: string | null;
   regions?: Region[];
+  onApply: (key: keyof Filters, value: any) => void;
 }
 
 {
   /**active - მომხმარებლის მიერ არჩეული dropDownItem */
 }
-const FilterDropDown = ({ active, regions }: FilterDropDownProps) => {
+const FilterDropDown = ({ active, regions, onApply }: FilterDropDownProps) => {
   const [selectedRegions, setSelectedRegions] = useState<number[]>([]);
 
-  useEffect(() => {
-    console.log("არჩეული რეგიონები:", selectedRegions);
-  }, [selectedRegions]); // ← ეს ნიშნავს: როცა selectedRegions შეიცვლება, მაშინ გაეშვი
-
-
-  {/** selectRegions - მასივი სადაც ინახება მონიშნული რეგიონების id */}
-  const handleCheckboxChange = (regionId: number, checked: boolean) => {
+  {
+    /** selectRegions - მასივი სადაც ინახება მონიშნული რეგიონების id */
+  }
+  const handleCheckboxChange = (regionId: number) => {
     setSelectedRegions((prev) => {
       if (prev.includes(regionId)) {
         return prev.filter((id) => id !== regionId);
@@ -27,10 +26,9 @@ const FilterDropDown = ({ active, regions }: FilterDropDownProps) => {
     });
   };
 
-  const handleChooseRegion = () => {
-    
-  }
-
+  const handleApply = () => {
+    onApply("regions", selectedRegions);
+  };
 
   return (
     <div className="absolute top-full shadow-lg mt-1 w-full">
@@ -43,9 +41,7 @@ const FilterDropDown = ({ active, regions }: FilterDropDownProps) => {
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex align-center gap-2"
               >
                 <input
-                  onChange={(e) =>
-                    handleCheckboxChange(region.id, e.target.checked)
-                  }
+                  onChange={() => handleCheckboxChange(region.id)}
                   className="w-5"
                   type="checkbox"
                 />
@@ -53,7 +49,10 @@ const FilterDropDown = ({ active, regions }: FilterDropDownProps) => {
               </li>
             ))}
           </ul>
-          <button onClick={handleChooseRegion} className="border border-gray-400 p-2 m-2 rounded-lg cursor-pointer">
+          <button
+            onClick={handleApply}
+            className="border border-gray-400 p-2 m-2 rounded-lg cursor-pointer"
+          >
             არჩევა
           </button>
         </div>
