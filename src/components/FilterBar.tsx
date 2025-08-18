@@ -3,21 +3,30 @@ import { useEffect, useState } from "react";
 import { getRegions } from "../services/geoApi";
 import { Region } from "../interfaces/geo";
 import FilterDropDown from "./FilterDropDown";
+import { Filters } from "../interfaces/filters";
+
 
 const FilterBar = () => {
-  // regions API 
+  // regions API
   const [regions, setRegions] = useState<Region[]>();
   const [dropDownItem, setDropDownItem] = useState<string | null>(null);
+  const [filters, setFilters] = useState({ regions: [] });
+
+
+  const handleFilterChange = (key: keyof Filters, value: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   useEffect(() => {
-
     getRegions()
       .then((data) => {
         console.log("API Response:", data);
         setRegions(data);
       })
       .catch((err) => console.error(err));
-
   }, []);
 
   const dropDownMenu = [
@@ -37,7 +46,6 @@ const FilterBar = () => {
     <>
       <div className="flex justify-between px-5 py-7 flex-wrap">
         <div className="relative flex px-2 py-2 border rounded-lg border-gray-300">
-
           {/**dropdwon navigation */}
           <ul className="flex gap-5">
             {dropDownMenu.map((item, index) => {
@@ -53,17 +61,16 @@ const FilterBar = () => {
                 </li>
               );
             })}
-
           </ul>
           <FilterDropDown active={dropDownItem} regions={regions} />
         </div>
         <div className="flex gap-4">
           <button className="flex items-center bg-[#F93B1D] text-white px-4 py-2 rounded-lg cursor-pointer">
-            <IoIosAdd className="text-[20px] translate-y-[2px]" />
+            <IoIosAdd className="text-[20px] mt-[2px]" />
             <span>ლისტინგის დამატება</span>
           </button>
           <button className="flex items-center border border-[#F93B1D] px-4 py-2 rounded-lg text-[#F93B1D] cursor-pointer">
-            <IoIosAdd className="text-[20px] translate-y-[2px]" />
+            <IoIosAdd className="text-[20px] mt-[2px]" />
             <span>აგენტის დამატება</span>
           </button>
         </div>
